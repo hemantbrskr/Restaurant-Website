@@ -1,11 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { HiOutlineArrowNarrowRight } from "react-icons/hi";
+const Success = () => {
+  const [countdown, setCountdown] = useState(10);
+  const navigate = useNavigate();
 
- const Success = () => {
+  useEffect(() => {
+    const timeoutId = setInterval(() => {
+      setCountdown((preCount) => {
+        if (preCount === 1) {
+          clearInterval(timeoutId);
+          navigate("/");
+        }
+        return preCount - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timeoutId);
+  }, [navigate]);
+
   return (
-  <>
-    <h1>success page</h1>
-  </>
-  )
-}
+    <>
+      <section className="notFound">
+        <div className="container">
+          <img src="/sandwich.png" alt="success" />
+          <h1>Redirecting to Home in {countdown} seconds...</h1>
+          <Link to={"/"}>
+            Back to Home <HiOutlineArrowNarrowRight />
+          </Link>
+        </div>
+      </section>
+    </>
+  );
+};
 
-export default Success;  // Exporting the component for use in other files.  // This component will display a success message when the reservation form is submitted successfully.  // The success message will be displayed in a green color.  // The component will also include a link back to the home page.  // The link will be styled with a hover effect and will change color to blue when hovered over.  // The link will open in a new tab when clicked.  //
+export default Success;
